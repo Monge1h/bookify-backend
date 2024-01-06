@@ -1,5 +1,5 @@
 import { CreateBookDto } from '../dtos/books/create-book.dto';
-import { Book } from 'src/modules/books/domains/entities/book.entity';
+import { Book, UserBook } from 'src/modules/books/domains/entities/book.entity';
 import { BookRepository } from 'src/infrastructure/repositories/book.repository';
 import { Injectable } from '@nestjs/common';
 
@@ -11,5 +11,9 @@ export class BookService {
     const newBook = new Book(null, bookDto.title, bookDto.author, bookDto.isbn);
 
     return this.bookRepository.createBookWithOwnership(newBook, bookDto.userId);
+  }
+
+  async getBooksByUserId(userId: number): Promise<UserBook[]> {
+    return await this.bookRepository.getBooksByUserId(userId);
   }
 }

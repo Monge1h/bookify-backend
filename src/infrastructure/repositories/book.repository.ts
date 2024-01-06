@@ -1,5 +1,5 @@
 import { PrismaService } from '../persistence/prisma/prisma.service';
-import { Book } from 'src/modules/books/domains/entities/book.entity';
+import { Book, UserBook } from 'src/modules/books/domains/entities/book.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -28,6 +28,28 @@ export class BookRepository {
       createdBook.title,
       createdBook.author,
       createdBook.isbn,
+    );
+  }
+
+  async getBooksByUserId(userId: number): Promise<UserBook[]> {
+    const books = await this.prisma.ownership.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        book: true,
+      },
+    });
+
+    return books.map(
+      (book) =>
+        new UserBook(
+          book.book.id,
+          book.book.title,
+          book.book.author,
+          book.book.isbn,
+          book.status,
+        ),
     );
   }
 }

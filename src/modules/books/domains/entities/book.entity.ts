@@ -39,3 +39,26 @@ export class Book {
     this._isbn = isbn;
   }
 }
+
+export class UserBook extends Book {
+  private _status: string;
+
+  constructor(
+    id: number,
+    title: string,
+    author: string,
+    isbn: string,
+    status: string,
+  ) {
+    super(id, title, author, isbn);
+    this._status = status;
+  }
+
+  get status(): string {
+    return this._status;
+  }
+
+  set status(status: string) {
+    this._status = status;
+  }
+}
