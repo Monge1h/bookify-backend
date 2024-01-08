@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Book" ADD COLUMN "genre" TEXT;
+ALTER TABLE "Book" ADD COLUMN "image" TEXT;
+ALTER TABLE "Book" ADD COLUMN "year" TEXT;
