@@ -10,28 +10,54 @@ export class BookRepository implements IBookRepository {
   constructor(private prisma: PrismaService) {}
 
   async createBookWithOwnership(book: Book, userId: number): Promise<Book> {
-    const createdBook = await this.prisma.book.create({
-      data: {
-        title: book.title,
-        author: book.author,
-        isbn: book.isbn,
+    const bookExists = await this.prisma.book.findFirstOrThrow({
+      where: {
+        externalId: book.externalId,
       },
     });
+    if (bookExists) {
+      await this.prisma.ownership.create({
+        data: {
+          bookId: bookExists.id,
+          userId: userId,
+          status: 'Reading',
+        },
+      });
+      return new Book(
+        bookExists.id,
+        bookExists.title,
+        bookExists.author,
+        bookExists.isbn,
+      );
+    } else {
+      const createdBook = await this.prisma.book.create({
+        data: {
+          title: book.title,
+          author: book.author,
+          isbn: book.isbn,
+          description: book.description,
+          genre: book.genre,
+          image: book.image,
+          year: book.year,
+          externalId: book.externalId,
+        },
+      });
 
-    await this.prisma.ownership.create({
-      data: {
-        bookId: createdBook.id,
-        userId: userId,
-        status: 'Owned',
-      },
-    });
+      await this.prisma.ownership.create({
+        data: {
+          bookId: createdBook.id,
+          userId: userId,
+          status: 'Owned',
+        },
+      });
 
-    return new Book(
-      createdBook.id,
-      createdBook.title,
-      createdBook.author,
-      createdBook.isbn,
-    );
+      return new Book(
+        createdBook.id,
+        createdBook.title,
+        createdBook.author,
+        createdBook.isbn,
+      );
+    }
   }
 
   async getBooksByUserId(userId: number): Promise<UserBook[]> {

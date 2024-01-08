@@ -4,4 +4,9 @@ export class CreateBookDto {
   author: string;
   isbn?: string;
   userId: number;
+  description?: string;
+  image?: string;
+  year?: string;
+  genre?: string;
+  externalId?: string;
 }

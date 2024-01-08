@@ -10,7 +10,17 @@ export class BookService {
   constructor(private bookRepository: BookRepository) {}
 
   async createBookWithOwnership(bookDto: CreateBookDto): Promise<Book> {
-    const newBook = new Book(null, bookDto.title, bookDto.author, bookDto.isbn);
+    const newBook = new Book(
+      null,
+      bookDto.title,
+      bookDto.author,
+      bookDto.isbn,
+      bookDto.genre,
+      bookDto.image,
+      bookDto.year,
+      bookDto.description,
+      bookDto.externalId,
+    );
 
     return this.bookRepository.createBookWithOwnership(newBook, bookDto.userId);
   }
