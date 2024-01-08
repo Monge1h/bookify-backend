@@ -10,7 +10,7 @@ export class BookRepository implements IBookRepository {
   constructor(private prisma: PrismaService) {}
 
   async createBookWithOwnership(book: Book, userId: number): Promise<Book> {
-    const bookExists = await this.prisma.book.findFirstOrThrow({
+    const bookExists = await this.prisma.book.findFirst({
       where: {
         externalId: book.externalId,
       },
