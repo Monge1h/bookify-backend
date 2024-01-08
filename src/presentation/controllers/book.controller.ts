@@ -51,4 +51,9 @@ export class BookController {
       status,
     );
   }
+
+  @Get('external/:externalId')
+  async getBookByExternalId(@Param('externalId') externalId: string) {
+    return this.bookService.getBookByExternalId(externalId);
+  }
 }

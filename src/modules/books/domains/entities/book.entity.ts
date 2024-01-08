@@ -127,3 +127,31 @@ export class UserBook extends Book {
     this._status = status;
   }
 }
+
+export class BookWithOwners extends Book {
+  private _owners: UserBook[];
+
+  constructor(
+    id: number,
+    title: string,
+    author: string,
+    isbn: string,
+    genre?: string,
+    image?: string,
+    year?: string,
+    description?: string,
+    externalId?: string,
+    owners?: any[],
+  ) {
+    super(id, title, author, isbn, genre, image, year, description, externalId);
+    this._owners = owners;
+  }
+
+  get owners(): UserBook[] {
+    return this._owners;
+  }
+
+  set owners(owners: UserBook[]) {
+    this._owners = owners;
+  }
+}

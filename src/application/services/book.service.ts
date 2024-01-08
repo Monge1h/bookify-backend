@@ -3,8 +3,6 @@ import { Book, UserBook } from 'src/modules/books/domains/entities/book.entity';
 import { BookRepository } from 'src/infrastructure/repositories/book.repository';
 import { Injectable } from '@nestjs/common';
 
-type BookWithOwnership = Book & { userId: number; status: string };
-
 @Injectable()
 export class BookService {
   constructor(private bookRepository: BookRepository) {}
@@ -29,11 +27,19 @@ export class BookService {
     return await this.bookRepository.getBooksByUserId(userId);
   }
 
-  async updateBookStatus(book: BookWithOwnership): Promise<boolean> {
-    return await this.bookRepository.updateBookStatus(book);
+  async updateBookStatus(
+    bookId: number,
+    userId: number,
+    status: string,
+  ): Promise<boolean> {
+    return await this.bookRepository.updateBookStatus(bookId, userId, status);
   }
 
   async deleteBook(bookId: number, userId: number): Promise<boolean> {
     return await this.bookRepository.deleteOwnership(bookId, userId);
+  }
+
+  async getBookByExternalId(externalId: string): Promise<Book | null> {
+    return await this.bookRepository.getBookByExternalId(externalId);
   }
 }

@@ -14,4 +14,5 @@ export interface IBookRepository {
   //   findBookByOwnerId(ownerId: number): Promise<Book[]>;
   createBookWithOwnership(book: Book, userId: number): Promise<Book>;
   deleteOwnership(bookId: number, userId: number): Promise<boolean>;
+  getBookByExternalId(externalId: string): Promise<Book | null>;
 }

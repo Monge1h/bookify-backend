@@ -1,9 +1,11 @@
 import { PrismaService } from '../persistence/prisma/prisma.service';
-import { Book, UserBook } from 'src/modules/books/domains/entities/book.entity';
+import {
+  Book,
+  BookWithOwners,
+  UserBook,
+} from 'src/modules/books/domains/entities/book.entity';
 import { Injectable } from '@nestjs/common';
 import { IBookRepository } from 'src/modules/books/domains/repositories/ibook.repository';
-
-type BookWithOwnership = Book & { userId: number; status: string };
 
 @Injectable()
 export class BookRepository implements IBookRepository {
@@ -115,5 +117,36 @@ export class BookRepository implements IBookRepository {
       },
     });
     return deleteOwnership ? true : false;
+  }
+
+  async getBookByExternalId(externalId: string): Promise<Book> {
+    const book = await this.prisma.book.findFirst({
+      where: {
+        externalId: externalId,
+      },
+      include: {
+        owners: {
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return new BookWithOwners(
+      book.id,
+      book.title,
+      book.author,
+      book.isbn,
+      book.genre,
+      book.image,
+      book.year,
+      book.description,
+      book.externalId,
+      book.owners,
+    );
   }
 }
