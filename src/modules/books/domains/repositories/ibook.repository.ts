@@ -3,7 +3,11 @@ import { Book } from '../entities/book.entity';
 export interface IBookRepository {
   //   createBook(book: Book): Promise<Book>;
   //   findBookById(id: number): Promise<Book | null>;
-  updateBookStatus(book: Book): Promise<boolean>;
+  updateBookStatus(
+    bookId: number,
+    userId: number,
+    status: string,
+  ): Promise<boolean>;
   //   deleteBook(id: number): Promise<void>;
   //   findAllBooks(): Promise<Book[]>;
   getBooksByUserId(userId: number): Promise<Book[]>;

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { BookService } from 'src/application/services/book.service';
@@ -37,5 +38,17 @@ export class BookController {
   @Delete(':bookId')
   async deleteOwnership(@Param('bookId') bookId: number): Promise<any> {
     return this.bookService.deleteBook(+bookId, 1); // todo get user id from request jwt token
+  }
+
+  @Put(':bookId')
+  async updateBookStatus(
+    @Param('bookId') bookId: number,
+    @Body('status') status: string,
+  ): Promise<any> {
+    return this.bookService.updateBookStatus(
+      +bookId,
+      1, // todo get user id from request jwt token
+      status,
+    );
   }
 }

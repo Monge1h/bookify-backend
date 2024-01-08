@@ -47,7 +47,7 @@ export class BookRepository implements IBookRepository {
         data: {
           bookId: createdBook.id,
           userId: userId,
-          status: 'Owned',
+          status: 'Reading',
         },
       });
 
@@ -86,16 +86,20 @@ export class BookRepository implements IBookRepository {
         ),
     );
   }
-  async updateBookStatus(book: BookWithOwnership): Promise<boolean> {
+  async updateBookStatus(
+    bookId: number,
+    userId: number,
+    status: string,
+  ): Promise<boolean> {
     const updateOwnership = await this.prisma.ownership.update({
       where: {
         bookId_userId: {
-          bookId: book.id,
-          userId: book.userId,
+          bookId,
+          userId,
         },
       },
       data: {
-        status: book.status, // todo add validation to this field with an enum of possible values (Read, Reading, NotStarted)
+        status, // todo add validation to this field with an enum of possible values (Read, Reading, NotStarted)
       },
     });
     return updateOwnership ? true : false;
