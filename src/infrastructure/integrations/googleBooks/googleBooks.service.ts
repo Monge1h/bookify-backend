@@ -12,7 +12,7 @@ export class BookSearchService {
   async searchBooks(query: string): Promise<GoogleBooksApiResponse> {
     try {
       const response = await axios.get(
-        `${this.API_URL}?q=${encodeURIComponent(query)}&&maxResults=20`,
+        `${this.API_URL}?q=${encodeURIComponent(query)}&&maxResults=5`,
       );
       return response.data.items.map((book) => this.transformToBookModel(book));
     } catch (error) {
