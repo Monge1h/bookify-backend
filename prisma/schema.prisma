@@ -18,6 +18,8 @@ model Book {
   genre     String?
   year      String?
   image     String?
+  externalId String?
+  description String?
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   owners    Ownership[]
